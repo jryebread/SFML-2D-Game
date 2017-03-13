@@ -6,7 +6,7 @@ Player::Player()
 {
 	rect.setSize(sf::Vector2f(32, 32));
 	rect.setFillColor(sf::Color::Blue);
-	sprite.setPosition(400, 400);
+	sprite.setPosition(600, 600);
 	sprite.setTextureRect(sf::IntRect(counterIncrement * 32, 0, 32, 52));
 }
 
@@ -24,8 +24,6 @@ void Player::frameCounter()
 
 void Player::updateAnimation()
 {
-	
-		
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
 		sprite.setTextureRect(sf::IntRect(counterIncrement * 32, 49 * 3, 32, 52));
 		m_direction = 1;

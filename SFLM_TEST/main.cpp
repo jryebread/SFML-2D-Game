@@ -5,6 +5,7 @@
 #include "Entity.h"
 #include <vector>
 #include "Projectile.h"
+#include "Enemy.h"
 
 int main()
 {
@@ -37,6 +38,13 @@ int main()
 	Player player1;
 	player1.sprite.setTexture(texturePlayer);
 
+	/////////////EnemySprite///////////////
+	sf::Texture textureEnemy;
+	if (!textureEnemy.loadFromFile("enemySprite.png")) {
+		return EXIT_FAILURE;
+	}
+	Enemy enemy1;
+	enemy1.sprite.setTexture(textureEnemy);
 	//////////////////////Background////////////////////////
 	sf::Texture textureBackground;
 	if (!textureBackground.loadFromFile("background.png")) {
@@ -46,12 +54,25 @@ int main()
 
 	
 
-	//Projectile Object
+	//Projectile Array
 	Projectile projectile1;
 	std::vector<Projectile>::const_iterator iter;
 	std::vector<Projectile> projectileArray;
+
 	
+	
+	//Enemy Vector Array
+	std::vector<Enemy>::const_iterator e_iter;
+	std::vector<Enemy> enemyArray;
+	//Enemy object
+	enemy1.rect.setPosition(300, 200);
+	enemyArray.push_back(enemy1);
+	
+	
+
 	sf::Event event;
+
+	//Game Loop
 	while (window.isOpen())
 	{
 		while (window.pollEvent(event))
@@ -63,7 +84,7 @@ int main()
 		window.clear();
 		window.draw(spriteBackground);
 		
-		// Fires Missle(Space)
+		// Draw Projectiles
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 			{
 				projectile1.rect.setPosition(player1.rect.getPosition().x + player1.rect.getSize().x / 2 - projectile1.rect.getSize().x/2, player1.rect.getPosition().y + player1.rect.getSize().y / 2 - projectile1.rect.getSize().y/2);
@@ -75,6 +96,17 @@ int main()
 			{
 				projectileArray[counter].update(); //update projectiles
 				window.draw(projectileArray[counter].rect);
+				counter++;
+			}
+
+			
+			//Draw Enemies
+			counter = 0;
+			for (e_iter = enemyArray.begin(); e_iter != enemyArray.end(); e_iter++)
+			{
+				enemyArray[counter].update(); 
+				window.draw(enemyArray[counter].rect);
+				window.draw(enemyArray[counter].sprite);
 				counter++;
 			}
 		
@@ -90,12 +122,10 @@ int main()
 		player1.updateAnimation();
 		frameCounter = 0;
 		}
-
-
 		player1.updateMovement();
 		//Draw the sprite
-		//window.draw(spriteBackground);
 		window.draw(player1.sprite);
+		
 		//Update the window
 		window.display();
 	}

@@ -6,9 +6,9 @@
 Projectile::Projectile()
 {
 	rect.setSize(sf::Vector2f(10, 10));
-	rect.setFillColor(sf::Color::Green);
+	rect.setFillColor(sf::Color::Red);
 	sprite.setPosition(0, 0);
-	//sprite.setTextureRect(sf::IntRect(counterIncrement * 32, 0, 32, 52));
+	
 }
 
 void Projectile::update()

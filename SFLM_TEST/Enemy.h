@@ -1,17 +1,18 @@
 #pragma once
 #include "Entity.h"
-#include <SFML/Graphics.hpp>
-class Player : public Entity
+#include "random.h"
+class Enemy :public Entity
 {
 public:
-	Player();
+	Enemy();
 	void update();
 	void updateMovement();
 	void updateAnimation();
 	void frameCounter();
-	int m_direction = 1;
-	int counterIncrement = 0;
-	int playerSpeed = 2;
+	int direction = 0;
+private:
+	int counterIncrement = 5;
+	int speed = 2;
 	int attackDamage = 5;
 
 };
