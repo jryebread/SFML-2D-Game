@@ -1,5 +1,6 @@
 #include "random.h"
-
+#include <random>
+#include <ctime>
 
 
 int generateRandom(int max)

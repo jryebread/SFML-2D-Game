@@ -11,8 +11,10 @@ public:
 	void frameCounter();
 	int direction = 0;
 private:
-	int counterIncrement = 5;
+	int counter = 0;
+	int frameIncrement = 0;
 	int speed = 2;
+	int movementLength = 30;
 	int attackDamage = 5;
 
 };

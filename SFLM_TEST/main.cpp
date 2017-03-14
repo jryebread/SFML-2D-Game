@@ -9,7 +9,7 @@
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(510,480), "SFML works!");
+	sf::RenderWindow window(sf::VideoMode(510,480), "SFML");
 	window.setFramerateLimit(60);
 	sf::Clock clock;
 	float frameCounter = 0, switchFrame = 100, frameSpeed = 600;
@@ -64,9 +64,7 @@ int main()
 	//Enemy Vector Array
 	std::vector<Enemy>::const_iterator e_iter;
 	std::vector<Enemy> enemyArray;
-	//Enemy object
-	enemy1.rect.setPosition(300, 200);
-	enemyArray.push_back(enemy1);
+
 	
 	
 
@@ -83,7 +81,22 @@ int main()
 		//Clear Screen
 		window.clear();
 		window.draw(spriteBackground);
-		
+		counter = 0;
+		//Projectile Collides with Enemy
+		//TODO
+
+
+
+
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
+		{
+			//Enemy object
+			enemy1.rect.setPosition(generateRandom(window.getSize().x), generateRandom(window.getSize().y));
+			enemyArray.push_back(enemy1);
+		}
+
+
 		// Draw Projectiles
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 			{
@@ -105,7 +118,8 @@ int main()
 			for (e_iter = enemyArray.begin(); e_iter != enemyArray.end(); e_iter++)
 			{
 				enemyArray[counter].update(); 
-				window.draw(enemyArray[counter].rect);
+				enemyArray[counter].updateMovement();
+				//window.draw(enemyArray[counter].rect);
 				window.draw(enemyArray[counter].sprite);
 				counter++;
 			}
