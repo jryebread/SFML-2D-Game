@@ -8,8 +8,11 @@ public:
 	Projectile();
 	void update();
 	int m_direction = 0;
+	bool destroy = false;
+	int counterLifetime = 0;
+	int lifeTime = 100;
+	int attackDamage = 1;
 private:
-	int movementSpeed = 10;
-	int attackDamage = 5;
+	int movementSpeed = 15;
 };
 

@@ -11,7 +11,7 @@ int main()
 {
 	sf::RenderWindow window(sf::VideoMode(510,480), "SFML");
 	window.setFramerateLimit(60);
-	sf::Clock clock;
+	sf::Clock clock, clock_shoot;
 	float frameCounter = 0, switchFrame = 100, frameSpeed = 600;
 	int counter = 0;
 	//sf::Texture textureShip;
@@ -65,9 +65,6 @@ int main()
 	std::vector<Enemy>::const_iterator e_iter;
 	std::vector<Enemy> enemyArray;
 
-	
-	
-
 	sf::Event event;
 
 	//Game Loop
@@ -80,15 +77,62 @@ int main()
 		}
 		//Clear Screen
 		window.clear();
+		//clock
+		sf::Time elapsed1 = clock_shoot.getElapsedTime();
+
+
 		window.draw(spriteBackground);
-		counter = 0;
+
 		//Projectile Collides with Enemy
-		//TODO
+		int counter2 = 0;
+		counter = 0;
+		for (iter = projectileArray.begin(); iter != projectileArray.end(); iter++)
+		{
 
+			counter2 = 0;
+			for (e_iter = enemyArray.begin(); e_iter != enemyArray.end(); e_iter++)
+			{
+				if (projectileArray[counter].rect.getGlobalBounds().intersects(enemyArray[counter2].rect.getGlobalBounds()))
+				{
+					projectileArray[counter].destroy = true;
+					enemyArray[counter2].hp -= projectileArray[counter].attackDamage; 
 
+					if (enemyArray[counter2].hp <= 0)
+					{
+						enemyArray[counter2].alive = false;
+					}
+				}
+				counter2++;
+			}
 
+			counter++;
+		}
 
+		//Delete dead enemies
+		counter = 0;
+		for (e_iter = enemyArray.begin(); e_iter != enemyArray.end(); e_iter++)
+		{
+			if (enemyArray[counter].alive == false)
+			{
+				std::cout << "Enemy Destroyed!" << std::endl;
+				enemyArray.erase(e_iter);
+				break;
+			}
+			counter++;
+		}
+		//Delete Projectiles
+		counter = 0;
+		for (iter = projectileArray.begin(); iter != projectileArray.end(); iter++)
+		{
+			if (projectileArray[counter].destroy == true)
+			{
+				projectileArray.erase(iter);
+				break;
+			}
+			counter++;
+		}
 
+		// Spawn Enemies
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
 		{
 			//Enemy object
@@ -96,35 +140,41 @@ int main()
 			enemyArray.push_back(enemy1);
 		}
 
-
-		// Draw Projectiles
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		//Fires Missle (Space Bar)
+		
+		
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		{
+			if (elapsed1.asSeconds() >= 0.5)
 			{
-				projectile1.rect.setPosition(player1.rect.getPosition().x + player1.rect.getSize().x / 2 - projectile1.rect.getSize().x/2, player1.rect.getPosition().y + player1.rect.getSize().y / 2 - projectile1.rect.getSize().y/2);
+				clock_shoot.restart();
+				projectile1.rect.setPosition(player1.rect.getPosition().x
+					+ player1.rect.getSize().x / 2 - projectile1.rect.getSize().x / 2, player1.rect.getPosition().y + player1.rect.getSize().y / 2 - projectile1.rect.getSize().y / 2);
 				projectile1.m_direction = player1.m_direction;
 				projectileArray.push_back(projectile1);
 			}
-			counter = 0;
-			for (iter = projectileArray.begin(); iter != projectileArray.end(); iter++)
-			{
-				projectileArray[counter].update(); //update projectiles
-				window.draw(projectileArray[counter].rect);
-				counter++;
-			}
-
+		}
+		
+	
 			
+		// Draw Projectiles
+			counter = 0;
+		for (iter = projectileArray.begin(); iter != projectileArray.end(); iter++)	
+		{
+			projectileArray[counter].update(); //update projectiles
+			window.draw(projectileArray[counter].rect);
+			counter++;
+		}
 			//Draw Enemies
 			counter = 0;
-			for (e_iter = enemyArray.begin(); e_iter != enemyArray.end(); e_iter++)
-			{
-				enemyArray[counter].update(); 
-				enemyArray[counter].updateMovement();
-				//window.draw(enemyArray[counter].rect);
-				window.draw(enemyArray[counter].sprite);
-				counter++;
-			}
-		
-
+		for (e_iter = enemyArray.begin(); e_iter != enemyArray.end(); e_iter++)
+		{
+			enemyArray[counter].update(); 
+			enemyArray[counter].updateMovement();
+			//window.draw(enemyArray[counter].rect);
+			window.draw(enemyArray[counter].sprite);
+			counter++;
+		}
 		
 		player1.update();
 
