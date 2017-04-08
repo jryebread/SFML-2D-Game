@@ -82,7 +82,7 @@ int main()
 
 
 		window.draw(spriteBackground);
-
+		
 		//Projectile Collides with Enemy
 		int counter2 = 0;
 		counter = 0;
